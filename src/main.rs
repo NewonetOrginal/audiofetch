@@ -17,9 +17,9 @@ struct TrackInfo {
 }
 impl TrackInfo {
     fn fmt_data(&self) -> String {
-        let player = &self.player;
-        let playback_state = &self.playback_state;
-        let title = &self.title;
+        let player = format!("Player: {}", &self.player);
+        let playback_state = format!("Playback State: {}", &self.playback_state);
+        let title = format!("Title: {}", &self.title);
         let artist = match &self.artist {
             Some(art) => format!("Artist: {}", art),
             None => String::from("Artist: Unknown"),
