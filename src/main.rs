@@ -24,8 +24,11 @@ impl<'a> TrackInfo<'a> {
         // let art_url = format!("Art Url: {}\n", &self.art_url);
         let art_url = &self.art_url;
 
+        let min = &self.length_sec / 60;
+        let sec = &self.length_sec % 60;
+
         format!(
-            "Player: {player}\nPlayback State: {playback_state}\nTitle: {title}\nArtists: In Progress\nAlbum Name: {album_name}\nArt Url: {art_url}\nLenght: In Progress"
+            "Player: {player}\nPlayback State: {playback_state}\nTitle: {title}\nArtists: In Progress\nAlbum Name: {album_name}\nArt Url: {art_url}\nLength: {min}:{sec:02}"
         )
     }
 }
