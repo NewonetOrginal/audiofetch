@@ -17,18 +17,30 @@ struct TrackInfo {
 }
 impl TrackInfo {
     fn fmt_data(&self) -> String {
-        match &self.artist {
+        let player = &self.player;
+        let playback_state = &self.playback_state;
+        let title = &self.title;
+        let artist = match &self.artist {
             Some(art) => format!("Artist: {}", art),
             None => String::from("Artist: Unknown"),
         };
-        match self.lenght_sec {
+        let album = match &self.album {
+            Some(album) => format!("Album: {}\n", album),
+            None => String::from(""),
+        };
+        let art_url = match &self.art_url {
+            Some(art) => format!("still to work on!!!"),
+            None => String::from(""),
+        };
+        let lenght = match self.lenght_sec {
             Some(len) => {
                 let min = len / 60;
                 let sec = len % 60;
                 format!("Lenght: {}:{}", min, sec)
             }
             None => String::from("Lenght: Unknown"),
-        }
+        };
+        format!("{player}\n{playback_state}\n{title}\n{artist}\n{album}{lenght}")
     }
 }
 
@@ -39,6 +51,7 @@ fn main() {
         title: String::from("Revive"),
         artist: Some(String::from("Hysia")),
         album: Some(String::from("Revive")),
+        // album: None,
         art_url: Some(String::from("")),
         lenght_sec: Some(302),
     };
