@@ -13,14 +13,19 @@ struct TrackInfo<'a> {
 
 impl<'a> TrackInfo<'a> {
     fn fmt_data(&self) -> String {
-        let player = format!("Player: {}\n", &self.player);
-        let playback_state = format!("Playback State: {}\n", &self.playback_state);
-        let title = format!("Title: {}\n", &self.title);
-        let album_name = format!("Album Name: {}\n", &self.album_name);
-        let art_url = format!("Art Url: {}\n", &self.art_url);
+        // let player = format!("Player: {}\n", &self.player);
+        let player = &self.player;
+        // let playback_state = format!("Playback State: {}\n", &self.playback_state);
+        let playback_state = &self.playback_state;
+        // let title = format!("Title: {}\n", &self.title)i;
+        let title = &self.title;
+        // let album_name = format!("Album Name: {}\n", &self.album_name);
+        let album_name = &self.album_name;
+        // let art_url = format!("Art Url: {}\n", &self.art_url);
+        let art_url = &self.art_url;
 
         format!(
-            "{player}{playback_state}{title}Artists: In Progress\n{album_name}{art_url}Lenght: In Progress"
+            "Player: {player}\nPlayback State: {playback_state}\nTitle: {title}\nArtists: In Progress\nAlbum Name: {album_name}\nArt Url: {art_url}\nLenght: In Progress"
         )
     }
 }
