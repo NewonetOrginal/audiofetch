@@ -48,21 +48,28 @@ impl TrackInfo {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
+    let player_finder = PlayerFinder::new()?;
+    let find_active = player_finder.find_active()?;
+    let playback_status = find_active.get_playback_status()?;
+
+    let metadata = find_active.get_metadata()?;
+    let title = match metadata.title() {
+        Some(title) => format!("{title}"),
+        None => String::from(""),
+    };
+
     let test_data = TrackInfo {
-        player: String::from("Spotify"),
-        playback_state: String::from("Playing"),
-        title: String::from("Revive"),
+        player: String::from(find_active.identity()),
+        playback_state: format!("{playback_status:?}"),
+        title: format!("{title}"),
         artist: Some(String::from("Hysia")),
         album: Some(String::from("Revive")),
         // album: None,
         art_url: Some(String::from("")),
         length_sec: Some(302),
     };
-    let output: String = test_data.fmt_data();
+    let output = test_data.fmt_data();
 
-    let player_finder = PlayerFinder::new()?;
-    let find_active = player_finder.find_active()?;
-    let player = find_active.identity();
-    println!("{player:?}");
+    println!("{output}");
     Ok(())
 }
