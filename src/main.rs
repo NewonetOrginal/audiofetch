@@ -1,8 +1,5 @@
 use mpris::PlayerFinder;
 use std::error::Error;
-use std::time::Duration;
-
-#[derive(Debug)]
 
 struct TrackInfo<'a> {
     player: &'a str,
@@ -10,13 +7,21 @@ struct TrackInfo<'a> {
     title: &'a str,
     artists: Vec<&'a str>,
     album_name: &'a str,
-    art_url: Option<&'a str>,
+    art_url: &'a str,
     length_sec: u64,
 }
 
 impl<'a> TrackInfo<'a> {
     fn fmt_data(&self) -> String {
-        format!("")
+        let player = format!("Player: {}\n", &self.player);
+        let playback_state = format!("Playback State: {}\n", &self.playback_state);
+        let title = format!("Title: {}\n", &self.title);
+        let album_name = format!("Album Name: {}\n", &self.album_name);
+        let art_url = format!("Art Url: {}\n", &self.art_url);
+
+        format!(
+            "{player}{playback_state}{title}Artists: In Progress\n{album_name}{art_url}Lenght: In Progress"
+        )
     }
 }
 
@@ -36,6 +41,9 @@ fn main() -> Result<(), Box<dyn Error>> {
     let Some(album_name) = metadata.album_name() else {
         return Ok(());
     };
+    let Some(art_url) = metadata.art_url() else {
+        return Ok(());
+    };
     let Some(length) = metadata.length() else {
         return Ok(());
     };
@@ -46,9 +54,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         title: title,
         artists: artists,
         album_name: album_name,
-        art_url: None,
+        art_url: art_url,
         length_sec: length.as_secs(),
     };
-    println!("{:#?}", trackinfo);
+
+    let output = trackinfo.fmt_data();
+
+    println!("{}", output);
     Ok(())
 }
