@@ -5,6 +5,8 @@
 //
 // USEFULL:
 // structs for data handling
+use mpris::PlayerFinder;
+use std::error::Error;
 
 struct TrackInfo {
     player: String,
@@ -15,6 +17,7 @@ struct TrackInfo {
     art_url: Option<String>,
     length_sec: Option<u64>,
 }
+
 impl TrackInfo {
     fn fmt_data(&self) -> String {
         let player = format!("Player: {}", &self.player);
@@ -44,7 +47,7 @@ impl TrackInfo {
     }
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
     let test_data = TrackInfo {
         player: String::from("Spotify"),
         playback_state: String::from("Playing"),
@@ -56,5 +59,10 @@ fn main() {
         length_sec: Some(302),
     };
     let output: String = test_data.fmt_data();
-    println!("{output}");
+
+    let player_finder = PlayerFinder::new()?;
+    let find_active = player_finder.find_active()?;
+    let player = find_active.identity();
+    println!("{player:?}");
+    Ok(())
 }
