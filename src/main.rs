@@ -17,16 +17,17 @@ struct TrackInfo {
 }
 impl TrackInfo {
     fn fmt_data(&self) -> String {
-        // let min: u64 = self.lenght_sec / 60;
-        // let sec: u64 = self.lenght_sec % 60;
-        // "Lenght: {}:{}"
+        match &self.artist {
+            Some(art) => format!("Artist: {}", art),
+            None => String::from("Artist: Unknown"),
+        };
         match self.lenght_sec {
             Some(len) => {
                 let min = len / 60;
                 let sec = len % 60;
-                format!("Track Lenght: {}:{}", min, sec)
+                format!("Lenght: {}:{}", min, sec)
             }
-            None => String::from("Track Lenght: Unknown"),
+            None => String::from("Lenght: Unknown"),
         }
     }
 }
