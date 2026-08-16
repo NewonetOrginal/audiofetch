@@ -27,8 +27,18 @@ impl<'a> TrackInfo<'a> {
         let min = &self.length_sec / 60;
         let sec = &self.length_sec % 60;
 
+        fn fmt_authors(authors: &[&str]) -> String {
+            if authors.is_empty() {
+                "Unknown Author".to_string()
+            } else {
+                authors.join(", ")
+            }
+        }
+
+        let authors = fmt_authors(&self.artists);
+
         format!(
-            "Player: {player}\nPlayback State: {playback_state}\nTitle: {title}\nArtists: In Progress\nAlbum Name: {album_name}\nArt Url: {art_url}\nLength: {min}:{sec:02}"
+            "Player: {player}\nPlayback State: {playback_state}\nTitle: {title}\nAuthors: {authors}\nAlbum Name: {album_name}\nArt Url: {art_url}\nLength: {min}:{sec:02}"
         )
     }
 }
