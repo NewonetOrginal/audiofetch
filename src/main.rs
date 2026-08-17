@@ -1,5 +1,6 @@
 use mpris::PlayerFinder;
 use std::error::Error;
+use std::option::Option;
 
 struct TrackInfo<'a> {
     player: &'a str,
@@ -24,8 +25,8 @@ impl<'a> TrackInfo<'a> {
         // let art_url = format!("Art Url: {}\n", &self.art_url);
         let art_url = &self.art_url;
 
-        let min = &self.length_sec / 60;
-        let sec = &self.length_sec % 60;
+        let min = self.length_sec / 60;
+        let sec = self.length_sec % 60;
 
         fn fmt_authors(authors: &[&str]) -> String {
             if authors.is_empty() {
@@ -50,21 +51,11 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let player = find_active.identity();
     let playback_state = find_active.get_playback_status()?;
-    let Some(title) = metadata.title() else {
-        return Ok(());
-    };
-    let Some(artists) = metadata.artists() else {
-        return Ok(());
-    };
-    let Some(album_name) = metadata.album_name() else {
-        return Ok(());
-    };
-    let Some(art_url) = metadata.art_url() else {
-        return Ok(());
-    };
-    let Some(length) = metadata.length() else {
-        return Ok(());
-    };
+    let title = metadata.title().unwrap_or_default();
+    let artists = metadata.artists().unwrap_or_default();
+    let album_name = metadata.album_name().unwrap_or_default();
+    let art_url = metadata.art_url().unwrap_or_default();
+    let length = metadata.length().unwrap_or_default();
 
     let trackinfo = TrackInfo {
         player: player,
