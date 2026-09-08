@@ -1,12 +1,13 @@
 use crossterm::style::Stylize;
 use mpris::PlayerFinder;
 use std::error::Error;
+use std::fmt::Write;
 
 struct TrackInfo<'a> {
     player: &'a str,
     playback_state: String,
     title: &'a str,
-    artists: Vec<&'a str>,
+    authors: Vec<&'a str>,
     album_name: &'a str,
     art_url: &'a str,
     length_sec: u64,
@@ -15,18 +16,18 @@ struct TrackInfo<'a> {
 impl<'a> TrackInfo<'a> {
     fn fmt_data(&self) -> String {
         // let player = format!("Player: {}\n", &self.player);
-        let player = &self.player;
+        // let player = &self.player;
         // let playback_state = format!("Playback State: {}\n", &self.playback_state);
-        let playback_state = &self.playback_state;
+        // let playback_state = &self.playback_state;
         // let title = format!("Title: {}\n", &self.title)i;
-        let title = &self.title;
+        // let title = &self.title;
         // let album_name = format!("Album Name: {}\n", &self.album_name);
-        let album_name = &self.album_name;
+        // let album_name = &self.album_name;
         // let art_url = format!("Art Url: {}\n", &self.art_url);
-        let art_url = &self.art_url;
+        // let art_url = &self.art_url;
 
-        let min = self.length_sec / 60;
-        let sec = self.length_sec % 60;
+        // let min = self.length_sec / 60;
+        // let sec = self.length_sec % 60;
 
         fn fmt_authors(authors: &[&str]) -> String {
             if authors.is_empty() {
@@ -36,11 +37,64 @@ impl<'a> TrackInfo<'a> {
             }
         }
 
-        let authors = fmt_authors(&self.artists);
+        // let authors = fmt_authors(&self.artists);
 
-        format!(
-            "Player: {player}\nPlayback State: {playback_state}\nTitle: {title}\nAuthors: {authors}\nAlbum Name: {album_name}\nArt Url: {art_url}\nLength: {min}:{sec:02}"
-        )
+        let mut output = String::new();
+
+        writeln!(&mut output, "{}", "Audio Fetch".bold().magenta());
+        writeln!(&mut output, "{}", "-----------");
+        writeln!(&mut output, "{} {}", "Player:".bold().blue(), &self.player);
+        writeln!(
+            &mut output,
+            "{} {}",
+            "Playback State:".bold().blue(),
+            &self.playback_state
+        );
+        writeln!(&mut output, "{} {}", "Player:".bold().blue(), &self.title);
+        writeln!(
+            &mut output,
+            "{} {}",
+            "Authors:".bold().blue(),
+            fmt_authors(&self.authors)
+        );
+        writeln!(
+            &mut output,
+            "{} {}",
+            "Album:".bold().blue(),
+            &self.album_name
+        );
+        writeln!(
+            &mut output,
+            "{} {}",
+            "Art Url:".bold().blue(),
+            &self.art_url
+        );
+        writeln!(
+            &mut output,
+            "{} {}:{:02}",
+            "Lenght:".bold().blue(),
+            self.length_sec / 60,
+            self.length_sec % 60,
+        );
+
+        output
+        //         format!(
+        //             "Player: {}
+        // Playback State: {}
+        // Title: {}
+        // Authors: {}
+        // Album Name: {}
+        // Art Url: {}
+        // Length: {}:{:02}",
+        //             &self.player.bold(),
+        //             &self.playback_state,
+        //             &self.title,
+        //             fmt_authors(&self.artists),
+        //             &self.album_name,
+        //             &self.art_url,
+        //             self.length_sec / 60,
+        //             self.length_sec % 60,
+        //         )
     }
 }
 
@@ -62,7 +116,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         player: player,
         playback_state: format!("{playback_state:?}"),
         title: title,
-        artists: artists,
+        authors: artists,
         album_name: album_name,
         art_url: art_url,
         length_sec: length.as_secs(),
