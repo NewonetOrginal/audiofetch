@@ -72,7 +72,7 @@ impl<'a> TrackInfo<'a> {
         writeln!(
             &mut output,
             "{} {}:{:02}",
-            "Lenght:".bold().blue(),
+            "Length:".bold().blue(),
             self.length_sec / 60,
             self.length_sec % 60,
         );
