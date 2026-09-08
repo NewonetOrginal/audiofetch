@@ -50,7 +50,7 @@ impl<'a> TrackInfo<'a> {
             "Playback State:".bold().blue(),
             &self.playback_state
         );
-        writeln!(&mut output, "{} {}", "Player:".bold().blue(), &self.title);
+        writeln!(&mut output, "{} {}", "Title:".bold().blue(), &self.title);
         writeln!(
             &mut output,
             "{} {}",
