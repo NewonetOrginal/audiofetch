@@ -1,3 +1,4 @@
+use crossterm::style::Stylize;
 use mpris::PlayerFinder;
 use std::error::Error;
 
