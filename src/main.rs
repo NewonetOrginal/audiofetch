@@ -12,6 +12,8 @@ struct TrackInfo<'a> {
     album_name: &'a str,
     art_url: &'a str,
     length_sec: u64,
+    rating: f64,
+    track_number: i32,
 }
 
 impl<'a> TrackInfo<'a> {
@@ -79,6 +81,12 @@ impl<'a> TrackInfo<'a> {
         // "Album".bold().blue(),
         // &self.album_name
         // );
+        output.push(format!(
+            "{}: {}",
+            "Track Number".bold().blue(),
+            self.track_number
+        ));
+
         output.push(format!("{}: {}", "Art Url".bold().blue(), &self.art_url));
         // let _ = writeln!(
         //     &mut output,
@@ -92,6 +100,9 @@ impl<'a> TrackInfo<'a> {
             self.length_sec / 60,
             self.length_sec % 60,
         ));
+
+        output.push(format!("{}: {}", "Rating".bold().blue(), self.rating));
+
         // let _ = writeln!(
         //     &mut output,
         // "{}: {}:{:02}",
@@ -144,7 +155,7 @@ fn output(mut art: Vec<String>, mut info: Vec<String>) {
     if artlen > infolen {
         info.resize(artlen, "".to_string());
     } else if artlen < infolen {
-        art.resize(infolen, "       ".to_string());
+        art.resize(infolen, "                 ".to_string());
     } else {
     }
 
@@ -177,6 +188,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         album_name: album_name,
         art_url: art_url,
         length_sec: length.as_secs(),
+        track_number: track_number,
+        rating: auto_rating,
     };
 
     let info = trackinfo.fmt_data();
