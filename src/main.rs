@@ -195,33 +195,40 @@ fn main() -> Result<(), Box<dyn Error>> {
     let find_active = player_finder.find_active()?;
     let metadata = find_active.get_metadata()?;
 
-    let player = find_active.identity();
-    let playback_state = find_active.get_playback_status()?;
+    if metadata.is_empty() != true {
+        let player = find_active.identity();
+        let playback_state = find_active.get_playback_status()?;
 
-    let title = metadata.title().unwrap_or("Unknown");
-    let artists = metadata.artists().unwrap_or(vec!["Unknown"]);
-    let album_name = metadata.album_name().unwrap_or("Unknown");
-    let art_url = metadata.art_url().unwrap_or("Not Provided");
-    let length = metadata.length().unwrap_or_default();
-    let auto_rating = metadata.auto_rating().unwrap_or_default();
-    let track_number = metadata.track_number().unwrap_or_default();
+        let title = metadata.title().unwrap_or("Unknown");
+        let artists = metadata.artists().unwrap_or(vec!["Unknown"]);
+        let album_name = metadata.album_name().unwrap_or("Unknown");
+        let art_url = metadata.art_url().unwrap_or("Not Provided");
+        let length = metadata.length().unwrap_or_default();
+        let auto_rating = metadata.auto_rating().unwrap_or_default();
+        let track_number = metadata.track_number().unwrap_or_default();
 
-    let trackinfo = TrackInfo {
-        player: player,
-        playback_state: format!("{playback_state:?}"),
-        title: title,
-        authors: artists,
-        album_name: album_name,
-        art_url: art_url,
-        length_sec: length.as_secs(),
-        track_number: track_number,
-        rating: auto_rating,
-    };
+        let trackinfo = TrackInfo {
+            player: player,
+            playback_state: format!("{playback_state:?}"),
+            title: title,
+            authors: artists,
+            album_name: album_name,
+            art_url: art_url,
+            length_sec: length.as_secs(),
+            track_number: track_number,
+            rating: auto_rating,
+        };
 
-    let info = trackinfo.fmt_data();
-    let art = ascii_art();
+        let info = trackinfo.fmt_data();
+        let art = ascii_art();
 
-    output(art, info);
+        output(art, info);
 
-    Ok(())
+        Ok(())
+    } else {
+        let info = vec!["No Player ;(".bold().dark_red().to_string()];
+        let art = ascii_art();
+        output(art, info);
+        Ok(())
+    }
 }
