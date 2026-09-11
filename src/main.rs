@@ -14,7 +14,7 @@ struct TrackInfo<'a> {
 }
 
 impl<'a> TrackInfo<'a> {
-    fn fmt_data(&self) -> String {
+    fn fmt_data(&self) -> Vec<String> {
         // let player = format!("Player: {}\n", &self.player);
         // let player = &self.player;
         // let playback_state = format!("Playback State: {}\n", &self.playback_state);
@@ -39,43 +39,44 @@ impl<'a> TrackInfo<'a> {
 
         // let authors = fmt_authors(&self.artists);
 
-        let mut output = String::new();
+        let mut output: Vec<String> = Vec::new();
 
-        let _ = writeln!(&mut output, "{}", "Audio Fetch".bold().magenta());
-        let _ = writeln!(&mut output, "{}", "-----------");
-        let _ = writeln!(&mut output, "{} {}", "Player:".bold().blue(), &self.player);
-        let _ = writeln!(
-            &mut output,
-            "{}: {}",
-            "Playback State".bold().blue(),
-            &self.playback_state
-        );
-        let _ = writeln!(&mut output, "{}: {}", "Title".bold().blue(), &self.title);
-        let _ = writeln!(
-            &mut output,
-            "{}: {}",
-            "Authors".bold().blue(),
-            fmt_authors(&self.authors)
-        );
-        let _ = writeln!(
-            &mut output,
-            "{}: {}",
-            "Album".bold().blue(),
-            &self.album_name
-        );
-        let _ = writeln!(
-            &mut output,
-            "{}: {}",
-            "Art Url".bold().blue(),
-            &self.art_url
-        );
-        let _ = writeln!(
-            &mut output,
-            "{}: {}:{:02}",
-            "Length".bold().blue(),
-            self.length_sec / 60,
-            self.length_sec % 60,
-        );
+        output.push(format!("{}", "Audio Fetch".bold().magenta()));
+        // let _ = writeln!(&mut output, "{}", "Audio Fetch".bold().magenta());
+        // let _ = writeln!(&mut output, "{}", "-----------");
+        // let _ = writeln!(&mut output, "{} {}", "Player:".bold().blue(), &self.player);
+        // let _ = writeln!(
+        //     &mut output,
+        //     "{}: {}",
+        //     "Playback State".bold().blue(),
+        //     &self.playback_state
+        // );
+        // let _ = writeln!(&mut output, "{}: {}", "Title".bold().blue(), &self.title);
+        // let _ = writeln!(
+        //     &mut output,
+        //     "{}: {}",
+        //     "Authors".bold().blue(),
+        //     fmt_authors(&self.authors)
+        // );
+        // let _ = writeln!(
+        //     &mut output,
+        //     "{}: {}",
+        //     "Album".bold().blue(),
+        //     &self.album_name
+        // );
+        // let _ = writeln!(
+        //     &mut output,
+        //     "{}: {}",
+        //     "Art Url".bold().blue(),
+        //     &self.art_url
+        // );
+        // let _ = writeln!(
+        //     &mut output,
+        //     "{}: {}:{:02}",
+        //     "Length".bold().blue(),
+        //     self.length_sec / 60,
+        //     self.length_sec % 60,
+        // );
 
         output
         //         format!(
@@ -122,8 +123,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         length_sec: length.as_secs(),
     };
 
-    let output = trackinfo.fmt_data();
+    let output = &trackinfo.fmt_data()[0];
 
     println!("{}", output);
+    // let out = &output[0];
+    // println!("{}", out);
     Ok(())
 }
