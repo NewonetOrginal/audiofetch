@@ -103,6 +103,32 @@ impl<'a> TrackInfo<'a> {
 
         output.push(format!("{}: {}", "Rating".bold().blue(), self.rating));
 
+        output.push("".to_string());
+
+        output.push(format!(
+            "{}{}{}{}{}{}{}{}",
+            "\u{2588}\u{2588}\u{2588}".black(),
+            "\u{2588}\u{2588}\u{2588}".dark_red(),
+            "\u{2588}\u{2588}\u{2588}".dark_green(),
+            "\u{2588}\u{2588}\u{2588}".dark_yellow(),
+            "\u{2588}\u{2588}\u{2588}".dark_blue(),
+            "\u{2588}\u{2588}\u{2588}".dark_magenta(),
+            "\u{2588}\u{2588}\u{2588}".dark_cyan(),
+            "\u{2588}\u{2588}\u{2588}".grey(),
+        ));
+
+        output.push(format!(
+            "{}{}{}{}{}{}{}{}",
+            "\u{2588}\u{2588}\u{2588}".dark_grey(),
+            "\u{2588}\u{2588}\u{2588}".red(),
+            "\u{2588}\u{2588}\u{2588}".green(),
+            "\u{2588}\u{2588}\u{2588}".yellow(),
+            "\u{2588}\u{2588}\u{2588}".blue(),
+            "\u{2588}\u{2588}\u{2588}".magenta(),
+            "\u{2588}\u{2588}\u{2588}".cyan(),
+            "\u{2588}\u{2588}\u{2588}".white(),
+        ));
+
         // let _ = writeln!(
         //     &mut output,
         // "{}: {}:{:02}",
@@ -138,10 +164,10 @@ fn ascii_art() -> Vec<String> {
         r#" |\\_,-~/        "#.to_string(),
         r#" / _  _ |    ,--."#.to_string(),
         r#"(  @  @ )   / ,-'"#.to_string(),
-        r#"\  _T_/-._( (    "#.to_string(),
+        r#" \  _T_/-._( (   "#.to_string(),
         r#" /         `. \  "#.to_string(),
         r#"|         _  \ | "#.to_string(),
-        r#"\ \ ,  /      |  "#.to_string(),
+        r#" \ \ ,  /      | "#.to_string(),
         r#"  || |-_\__   /  "#.to_string(),
         r#"((_/`(____,-'    "#.to_string(),
     ];
