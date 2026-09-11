@@ -1,7 +1,8 @@
 use crossterm::style::Stylize;
 use mpris::PlayerFinder;
 use std::error::Error;
-use std::fmt::Write;
+// use std::fmt::Write;
+use std::iter::zip;
 
 struct TrackInfo<'a> {
     player: &'a str,
@@ -43,39 +44,60 @@ impl<'a> TrackInfo<'a> {
 
         output.push(format!("{}", "Audio Fetch".bold().magenta()));
         // let _ = writeln!(&mut output, "{}", "Audio Fetch".bold().magenta());
+        output.push(format!("{}", "-----------"));
         // let _ = writeln!(&mut output, "{}", "-----------");
+        output.push(format!("{} {}", "Player:".bold().blue(), &self.player));
         // let _ = writeln!(&mut output, "{} {}", "Player:".bold().blue(), &self.player);
+        output.push(format!(
+            "{}: {}",
+            "Playback State".bold().blue(),
+            &self.playback_state
+        ));
         // let _ = writeln!(
         //     &mut output,
         //     "{}: {}",
         //     "Playback State".bold().blue(),
         //     &self.playback_state
         // );
+        output.push(format!("{}: {}", "Title".bold().blue(), &self.title));
         // let _ = writeln!(&mut output, "{}: {}", "Title".bold().blue(), &self.title);
+        output.push(format!(
+            "{}: {}",
+            "Authors".bold().blue(),
+            fmt_authors(&self.authors)
+        ));
         // let _ = writeln!(
         //     &mut output,
-        //     "{}: {}",
-        //     "Authors".bold().blue(),
-        //     fmt_authors(&self.authors)
+        // "{}: {}",
+        // "Authors".bold().blue(),
+        // fmt_authors(&self.authors)
         // );
+        output.push(format!("{}: {}", "Album".bold().blue(), &self.album_name));
         // let _ = writeln!(
         //     &mut output,
-        //     "{}: {}",
-        //     "Album".bold().blue(),
-        //     &self.album_name
+        // "{}: {}",
+        // "Album".bold().blue(),
+        // &self.album_name
         // );
+        output.push(format!("{}: {}", "Art Url".bold().blue(), &self.art_url));
         // let _ = writeln!(
         //     &mut output,
-        //     "{}: {}",
-        //     "Art Url".bold().blue(),
-        //     &self.art_url
+        // "{}: {}",
+        // "Art Url".bold().blue(),
+        // &self.art_url
         // );
+        output.push(format!(
+            "{}: {}:{:02}",
+            "Length".bold().blue(),
+            self.length_sec / 60,
+            self.length_sec % 60,
+        ));
         // let _ = writeln!(
         //     &mut output,
-        //     "{}: {}:{:02}",
-        //     "Length".bold().blue(),
-        //     self.length_sec / 60,
-        //     self.length_sec % 60,
+        // "{}: {}:{:02}",
+        // "Length".bold().blue(),
+        // self.length_sec / 60,
+        // self.length_sec % 60,
         // );
 
         output
@@ -99,6 +121,38 @@ impl<'a> TrackInfo<'a> {
     }
 }
 
+fn ascii_art() -> Vec<String> {
+    let art = vec![
+        r#" ,_     _        "#.to_string(),
+        r#" |\\_,-~/        "#.to_string(),
+        r#" / _  _ |    ,--."#.to_string(),
+        r#"(  @  @ )   / ,-'"#.to_string(),
+        r#"\  _T_/-._( (    "#.to_string(),
+        r#" /         `. \  "#.to_string(),
+        r#"|         _  \ | "#.to_string(),
+        r#"\ \ ,  /      |  "#.to_string(),
+        r#"  || |-_\__   /  "#.to_string(),
+        r#"((_/`(____,-'    "#.to_string(),
+    ];
+    art
+}
+
+fn output(mut art: Vec<String>, mut info: Vec<String>) {
+    let artlen = art.len();
+    let infolen = info.len();
+
+    if artlen > infolen {
+        info.resize(artlen, "".to_string());
+    } else if artlen < infolen {
+        art.resize(infolen, "       ".to_string());
+    } else {
+    }
+
+    for (art_ln, info_ln) in zip(art, info) {
+        println!("{art_ln} {info_ln}")
+    }
+}
+
 fn main() -> Result<(), Box<dyn Error>> {
     let player_finder = PlayerFinder::new()?;
     let find_active = player_finder.find_active()?;
@@ -112,6 +166,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let album_name = metadata.album_name().unwrap_or("Unknown");
     let art_url = metadata.art_url().unwrap_or("Not Provided");
     let length = metadata.length().unwrap_or_default();
+    let auto_rating = metadata.auto_rating().unwrap_or_default();
+    let track_number = metadata.track_number().unwrap_or_default();
 
     let trackinfo = TrackInfo {
         player: player,
@@ -123,10 +179,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         length_sec: length.as_secs(),
     };
 
-    let output = &trackinfo.fmt_data()[0];
+    let info = trackinfo.fmt_data();
+    let art = ascii_art();
 
-    println!("{}", output);
-    // let out = &output[0];
-    // println!("{}", out);
+    output(art, info);
+
     Ok(())
 }
