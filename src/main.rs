@@ -48,60 +48,60 @@ impl<'a> TrackInfo<'a> {
         // let _ = writeln!(&mut output, "{}", "Audio Fetch".bold().magenta());
         output.push(format!("{}", "-----------"));
         // let _ = writeln!(&mut output, "{}", "-----------");
-        output.push(format!("{} {}", "Player:".bold().blue(), &self.player));
-        // let _ = writeln!(&mut output, "{} {}", "Player:".bold().blue(), &self.player);
+        output.push(format!("{} {}", "Player:".bold().cyan(), &self.player));
+        // let _ = writeln!(&mut output, "{} {}", "Player:".bold().cyan(), &self.player);
         output.push(format!(
             "{}: {}",
-            "Playback State".bold().blue(),
+            "Playback State".bold().cyan(),
             &self.playback_state
         ));
         // let _ = writeln!(
         //     &mut output,
         //     "{}: {}",
-        //     "Playback State".bold().blue(),
+        //     "Playback State".bold().cyan(),
         //     &self.playback_state
         // );
-        output.push(format!("{}: {}", "Title".bold().blue(), &self.title));
-        // let _ = writeln!(&mut output, "{}: {}", "Title".bold().blue(), &self.title);
+        output.push(format!("{}: {}", "Title".bold().cyan(), &self.title));
+        // let _ = writeln!(&mut output, "{}: {}", "Title".bold().cyan(), &self.title);
         output.push(format!(
             "{}: {}",
-            "Authors".bold().blue(),
+            "Authors".bold().cyan(),
             fmt_authors(&self.authors)
         ));
         // let _ = writeln!(
         //     &mut output,
         // "{}: {}",
-        // "Authors".bold().blue(),
+        // "Authors".bold().cyan(),
         // fmt_authors(&self.authors)
         // );
-        output.push(format!("{}: {}", "Album".bold().blue(), &self.album_name));
+        output.push(format!("{}: {}", "Album".bold().cyan(), &self.album_name));
         // let _ = writeln!(
         //     &mut output,
         // "{}: {}",
-        // "Album".bold().blue(),
+        // "Album".bold().cyan(),
         // &self.album_name
         // );
         output.push(format!(
             "{}: {}",
-            "Track Number".bold().blue(),
+            "Track Number".bold().cyan(),
             self.track_number
         ));
 
-        output.push(format!("{}: {}", "Art Url".bold().blue(), &self.art_url));
+        output.push(format!("{}: {}", "Art Url".bold().cyan(), &self.art_url));
         // let _ = writeln!(
         //     &mut output,
         // "{}: {}",
-        // "Art Url".bold().blue(),
+        // "Art Url".bold().cyan(),
         // &self.art_url
         // );
         output.push(format!(
             "{}: {}:{:02}",
-            "Length".bold().blue(),
+            "Length".bold().cyan(),
             self.length_sec / 60,
             self.length_sec % 60,
         ));
 
-        output.push(format!("{}: {}", "Rating".bold().blue(), self.rating));
+        output.push(format!("{}: {}", "Rating".bold().cyan(), self.rating));
 
         output.push("".to_string());
 
@@ -174,6 +174,11 @@ fn ascii_art() -> Vec<String> {
     art
 }
 
+fn generate_block_buffer(width_cells: usize, height_cells: usize) -> Vec<String> {
+    let row = "\u{2588}".repeat(width_cells);
+    vec![row; height_cells]
+}
+
 fn output(mut art: Vec<String>, mut info: Vec<String>) {
     let artlen = art.len();
     let infolen = info.len();
@@ -221,8 +226,9 @@ fn main() -> Result<(), Box<dyn Error>> {
 
         let info = trackinfo.fmt_data();
         let art = ascii_art();
+        let buffer = generate_block_buffer(40, 20);
 
-        output(art, info);
+        output(buffer, info);
 
         Ok(())
     } else {
