@@ -1,7 +1,6 @@
 use crossterm::style::Stylize;
 use mpris::PlayerFinder;
 use std::error::Error;
-// use std::fmt::Write;
 use std::iter::zip;
 
 struct TrackInfo<'a> {
@@ -18,20 +17,6 @@ struct TrackInfo<'a> {
 
 impl<'a> TrackInfo<'a> {
     fn fmt_data(&self) -> Vec<String> {
-        // let player = format!("Player: {}\n", &self.player);
-        // let player = &self.player;
-        // let playback_state = format!("Playback State: {}\n", &self.playback_state);
-        // let playback_state = &self.playback_state;
-        // let title = format!("Title: {}\n", &self.title)i;
-        // let title = &self.title;
-        // let album_name = format!("Album Name: {}\n", &self.album_name);
-        // let album_name = &self.album_name;
-        // let art_url = format!("Art Url: {}\n", &self.art_url);
-        // let art_url = &self.art_url;
-
-        // let min = self.length_sec / 60;
-        // let sec = self.length_sec % 60;
-
         fn fmt_authors(authors: &[&str]) -> String {
             if authors.is_empty() {
                 "Unknown Author".to_string()
@@ -40,47 +25,23 @@ impl<'a> TrackInfo<'a> {
             }
         }
 
-        // let authors = fmt_authors(&self.artists);
-
         let mut output: Vec<String> = Vec::new();
 
         output.push(format!("{}", "Audio Fetch".bold().magenta()));
-        // let _ = writeln!(&mut output, "{}", "Audio Fetch".bold().magenta());
         output.push(format!("{}", "-----------"));
-        // let _ = writeln!(&mut output, "{}", "-----------");
         output.push(format!("{} {}", "Player:".bold().cyan(), &self.player));
-        // let _ = writeln!(&mut output, "{} {}", "Player:".bold().cyan(), &self.player);
         output.push(format!(
             "{}: {}",
             "Playback State".bold().cyan(),
             &self.playback_state
         ));
-        // let _ = writeln!(
-        //     &mut output,
-        //     "{}: {}",
-        //     "Playback State".bold().cyan(),
-        //     &self.playback_state
-        // );
         output.push(format!("{}: {}", "Title".bold().cyan(), &self.title));
-        // let _ = writeln!(&mut output, "{}: {}", "Title".bold().cyan(), &self.title);
         output.push(format!(
             "{}: {}",
             "Authors".bold().cyan(),
             fmt_authors(&self.authors)
         ));
-        // let _ = writeln!(
-        //     &mut output,
-        // "{}: {}",
-        // "Authors".bold().cyan(),
-        // fmt_authors(&self.authors)
-        // );
         output.push(format!("{}: {}", "Album".bold().cyan(), &self.album_name));
-        // let _ = writeln!(
-        //     &mut output,
-        // "{}: {}",
-        // "Album".bold().cyan(),
-        // &self.album_name
-        // );
         output.push(format!(
             "{}: {}",
             "Track Number".bold().cyan(),
@@ -88,12 +49,6 @@ impl<'a> TrackInfo<'a> {
         ));
 
         output.push(format!("{}: {}", "Art Url".bold().cyan(), &self.art_url));
-        // let _ = writeln!(
-        //     &mut output,
-        // "{}: {}",
-        // "Art Url".bold().cyan(),
-        // &self.art_url
-        // );
         output.push(format!(
             "{}: {}:{:02}",
             "Length".bold().cyan(),
@@ -129,32 +84,7 @@ impl<'a> TrackInfo<'a> {
             "\u{2588}\u{2588}\u{2588}".white(),
         ));
 
-        // let _ = writeln!(
-        //     &mut output,
-        // "{}: {}:{:02}",
-        // "Length".bold().blue(),
-        // self.length_sec / 60,
-        // self.length_sec % 60,
-        // );
-
         output
-        //         format!(
-        //             "Player: {}
-        // Playback State: {}
-        // Title: {}
-        // Authors: {}
-        // Album Name: {}
-        // Art Url: {}
-        // Length: {}:{:02}",
-        //             &self.player.bold(),
-        //             &self.playback_state,
-        //             &self.title,
-        //             fmt_authors(&self.artists),
-        //             &self.album_name,
-        //             &self.art_url,
-        //             self.length_sec / 60,
-        //             self.length_sec % 60,
-        //         )
     }
 }
 
@@ -228,7 +158,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         let art = ascii_art();
         let buffer = generate_block_buffer(40, 20);
 
-        output(buffer, info);
+        output(art, info);
 
         Ok(())
     } else {
